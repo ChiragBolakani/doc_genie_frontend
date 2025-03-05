@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tables | TailAdmin - Tailwind CSS Admin Dashboard Template</title>
+</head>
+
+<body
+  x-data="{ page: 'tables', 'loaded': true, 'darkMode': true, 'stickyMenu': false, 'sidebarToggle': false, 'scrollTop': false }"
+  x-init="
+          darkMode = JSON.parse(localStorage.getItem('darkMode'));
+          $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))"
+  :class="{'dark text-bodydark bg-boxdark-2': darkMode === true}">
+  <!-- ===== Preloader Start ===== -->
+  <include src="./partials/preloader.html"></include>
+  <!-- ===== Preloader End ===== -->
+
+  <!-- ===== Page Wrapper Start ===== -->
+  <div class="flex h-screen overflow-hidden">
+    <!-- ===== Sidebar Start ===== -->
+    <include src="./partials/sidebar.html"></include>
+    <!-- ===== Sidebar End ===== -->
+
+    <!-- ===== Content Area Start ===== -->
+    <div class="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
+      <!-- ===== Header Start ===== -->
+      <include src="./partials/header.html" />
+      <!-- ===== Header End ===== -->
+
+      <!-- ===== Main Content Start ===== -->
+      <main>
+        <!-- Delete Confirmation Modal -->
+        <div id="delete-modal"
+          class="fixed inset-0 z-50 hidden items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
+          <div class="relative w-auto max-w-lg mx-auto my-6">
+            <div
+              class="relative flex flex-col w-full bg-white border-0 rounded-lg shadow-lg outline-none dark:bg-gray-800">
+              <!-- Modal Header -->
+              <div
+                class="flex items-start justify-between p-5 border-b border-solid rounded-t border-blueGray-200 dark:border-gray-700">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                  Confirm Document Deletion
+                </h3>
+                <button id="close-delete-modal"
+                  class="float-right p-1 ml-auto text-black bg-transparent border-0 text-3xl leading-none font-semibold outline-none focus:outline-none opacity-50 hover:opacity-75">
+                  <span class="block w-6 h-6 text-2xl text-black dark:text-white">
+                    ×
+                  </span>
+                </button>
+              </div>
+
+              <!-- Modal Body -->
+              <div class="relative flex-auto p-6">
+                <p class="my-4 text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
+                  Are you sure you want to delete this document?
+                  This action cannot be undone.
+                </p>
+              </div>
+
+              <!-- Modal Footer -->
+              <div
+                class="flex items-center justify-end p-6 border-t border-solid rounded-b border-blueGray-200 dark:border-gray-700">
+                <button id="cancel-delete"
+                  class="px-6 py-2 mb-1 mr-4 text-sm font-bold text-gray-600 uppercase transition-all duration-150 ease-linear bg-gray-200 rounded shadow outline-none hover:bg-gray-300 hover:shadow-lg focus:outline-none dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600">
+                  Cancel
+                </button>
+                <button id="confirm-delete"
+                  class="px-6 py-2 mb-1 text-sm font-bold text-white uppercase transition-all duration-150 ease-linear bg-red-500 rounded shadow outline-none hover:bg-red-600 hover:shadow-lg focus:outline-none">
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Overlay -->
+        <div id="delete-modal-overlay" class="fixed inset-0 z-40 hidden bg-black opacity-25"></div>
+        <div class="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+          <!-- Breadcrumb Start -->
+          <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <h2 class="font-bold text-black dark:text-white" id="add-document-button">
+              <div class="flex flex-wrap gap-5 xl:gap-20">
+                <a href="#"
+                  class="inline-flex items-center justify-center rounded-md bg-primary px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10">
+                  Add Document
+                </a>
+              </div>
+            </h2>
+
+            <nav>
+              <ol class="flex items-center gap-2">
+                <li>
+                  <a class="font-medium" href="index.html">Dashboard /</a>
+                </li>
+                <li class="font-medium text-primary">Tables</li>
+              </ol>
+            </nav>
+          </div>
+          <!-- Breadcrumb End -->
+
+          <!-- ====== Table Section Start -->
+          <div class="flex flex-col gap-10">
+
+            <div class="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+              <div class="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+                <h3 class="font-medium text-black dark:text-white">
+                  Add Document
+                </h3>
+              </div>
+              <form id="document-form">
+                <div class="p-6.5">
+                  <div class="mb-4.5">
+                    <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Document Name <span class="text-meta-1">*</span>
+                    </label>
+                    <input id="document-name" type="text" required placeholder="Enter document name"
+                      class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
+                  </div>
+
+                  <div class="mb-4.5">
+                    <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Description
+                    </label>
+                    <input id="document-description" type="text" placeholder="Description"
+                      class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
+                  </div>
+
+                  <div class="mb-4.5">
+                    <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Attach file <span class="text-meta-1">*</span>
+                    </label>
+                    <input id="document-file" type="file" required
+                      class="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-normal outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:px-5 file:py-3 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary">
+                  </div>
+
+                  <button type="submit"
+                    class="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
+                    Upload Document
+                  </button>
+                </div>
+              </form>
+            </div>
+
+
+            <!-- ====== Table One Start -->
+            <!-- <include src="./partials/table-01.html" /> -->
+            <!-- ====== Table One End -->
+
+            <!-- ====== Table Two Start -->
+            <!-- <include src="./partials/table-02.html" /> -->
+            <!-- ====== Table Two End -->
+
+            <!-- ====== Table Three Start -->
+            <include src="./partials/table-03.html" />
+            <!-- ====== Table Three End -->
+          </div>
+          <!-- ====== Table Section End -->
+        </div>
+      </main>
+      <!-- ===== Main Content End ===== -->
+    </div>
+    <!-- ===== Content Area End ===== -->
+  </div>
+  <!-- ===== Page Wrapper End ===== -->
+  <!-- <script type="module" src="./js/tables.js"></script> -->
+</body>
+
+</html>
