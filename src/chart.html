@@ -43,7 +43,7 @@
             </div> -->
         
             <!-- Chat Container -->
-            <div class="flex-1 overflow-y-auto mb-4" style="height: calc(100% - 70px);">
+            <div id="chatHistory" class="flex-1 overflow-y-auto mb-4" style="height: calc(100% - 70px);">
 
               <!-- Chat Message AI -->
               <div class="flex gap-3 my-4 text-gray-600 text-sm flex-1"><span class="relative flex shrink-0 overflow-hidden rounded-full w-8 h-8">
@@ -247,8 +247,8 @@
             
             <!-- Input box  -->
             <div class="pt-4 mt-auto">
-              <form class="flex items-center justify-center w-full space-x-2">
-                <input class="flex h-10 w-full rounded-md border border-[#e5e7eb] px-3 py-2 text-sm placeholder-[#6b7280] focus:outline-none focus:ring-2 focus:ring-[#9ca3af] disabled:cursor-not-allowed disabled:opacity-50 text-[#030712] focus-visible:ring-offset-2" placeholder="Type your message" value="">
+              <form class="flex items-center justify-center w-full space-x-2" id="chatForm">
+                <input id="queryInput" class="flex h-10 w-full rounded-md border border-[#e5e7eb] px-3 py-2 text-sm placeholder-[#6b7280] focus:outline-none focus:ring-2 focus:ring-[#9ca3af] disabled:cursor-not-allowed disabled:opacity-50 text-[#030712] focus-visible:ring-offset-2" placeholder="Type your message" value="">
                 <button class="inline-flex items-center justify-center rounded-md text-sm font-medium text-[#f9fafb] disabled:pointer-events-none disabled:opacity-50 bg-black hover:bg-[#111827E6] h-10 px-4 py-2">
                   Send</button>
               </form>
@@ -263,7 +263,7 @@
       <!-- ===== Content Area End ===== -->
     </div>
     <!-- ===== Page Wrapper End ===== -->
-     <script src="js/chart.js"></script>
+     <!-- <script src="js/chart.js"></script> -->
      <script>
   //      function adjustHeight() {
   //   const header = document.querySelector('header'); // or your header selector

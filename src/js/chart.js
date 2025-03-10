@@ -1,6 +1,5 @@
-const chatForm = document.getElementById('chatForm');
-const queryInput = document.getElementById('queryInput');
-const chatHistory = document.getElementById('chatHistory');
+import { get_access_token } from "./token_utils";
+import { initializeMarkdown, renderMarkdown } from "./markdown_utils.js";
 
 function generateGUID() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -10,36 +9,77 @@ function generateGUID() {
   });
 }
 
-function appendMessage(message, isUser = false) {
-  const messageElement = document.createElement('div');
-  messageElement.classList.add(isUser ? 'user-message' : 'bot-message');
-  messageElement.innerHTML = message;
-  chatHistory.appendChild(messageElement);
+// You might want to modify the element IDs to better reflect the relationship:
+function buildUserMessageElement(message, conversationId) {
+  const message_element = `
+    <div id="conversation-${conversationId}-user" class="flex gap-3 my-4 text-gray-600 text-sm flex-1">
+      <span class="relative flex shrink-0 overflow-hidden rounded-full w-8 h-8">
+        <div class="rounded-full bg-gray-100 border p-1">
+          <svg stroke="none" fill="black" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true" height="20" width="20" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+          </svg>
+        </div>
+      </span>
+      <p class="leading-relaxed"><span class="block font-bold text-gray-700">You </span>${message}
+      </p>
+    </div>
+  `;
+  return message_element;
+}
+
+function buildAIMessageElement(message, conversationId) {
+  const message_element = `
+    <div id="conversation-${conversationId}-ai" class="flex gap-3 my-4 text-gray-600 text-sm flex-1">
+      <span class="relative flex shrink-0 overflow-hidden rounded-full w-8 h-8">
+        <div class="rounded-full bg-gray-100 border p-1">
+          <svg stroke="none" fill="black" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true" height="20" width="20" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z">
+            </path>
+          </svg>
+        </div>
+      </span>
+      <p class="leading-relaxed"><span class="block font-bold text-gray-700">AI </span>${message}
+      </p>
+    </div>
+  `;
+  return message_element;
+}
+
+function appendMessage(message, conversationId, isUser = false) {
+  const messageElement = isUser 
+    ? buildUserMessageElement(message, conversationId) 
+    : buildAIMessageElement(message, conversationId);
+  chatHistory.innerHTML += messageElement;
   chatHistory.scrollTop = chatHistory.scrollHeight;
 }
 
-function renderMarkdown(text) {
-  // Implement your Markdown rendering logic here
-  // You can use a library like Marked.js or Showdown.js for Markdown rendering
-  // For simplicity, this example just returns the plain text
-  return text;
+function updateAIMessage(message, conversationId) {
+  const messageDiv = document.getElementById(`conversation-${conversationId}-ai`);
+  if (messageDiv) {
+    const messageParagraph = messageDiv.querySelector('p');
+    messageParagraph.innerHTML = `<span class="block font-bold text-gray-700">AI </span>${message}`;
+    chatHistory.scrollTop = chatHistory.scrollHeight;
+  }
 }
 
-chatForm.addEventListener('submit', async (e) => {
+async function handleChatSubmit(e) {
   e.preventDefault();
   const question = queryInput.value.trim();
   if (question !== '') {
-    appendMessage(question, true);
+    const clientId = generateGUID();
+    const conversationId = generateGUID();  // One conversationId for both question and answer
+
+    // Add user's question with the conversationId
+    appendMessage(question, conversationId, true);
     queryInput.value = '';
 
-    const clientId = generateGUID();
-    const conversationId = generateGUID();
+    const access_token = await get_access_token();
 
     const response = await fetch('http://127.0.0.1:8000/api/v1/query/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization' : 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM4NTE1MTA2LCJpYXQiOjE3Mzg1MTQ4MDYsImp0aSI6IjliMjYxNWE1NTA3NDQ2NWVhZmU5YWUyYWFiMmVhY2ExIiwidXNlcl9pZCI6Nn0.LTr0wtRu3nPv47s-t_go4ILnmm1mdsCWVmSA_9rHbfg'
+        'Authorization': `Bearer ${access_token}`
       },
       body: JSON.stringify({
         client_id: clientId,
@@ -50,6 +90,9 @@ chatForm.addEventListener('submit', async (e) => {
 
     const reader = response.body.getReader();
     let result = '';
+    
+    // Add initial empty AI message with the same conversationId
+    appendMessage('', conversationId, false);
 
     while (true) {
       const { done, value } = await reader.read();
@@ -68,7 +111,8 @@ chatForm.addEventListener('submit', async (e) => {
               const data = JSON.parse(jsonData);
               if (data.type === 'chunk') {
                 result += data.data;
-                appendMessage(renderMarkdown(result));
+                // Update AI message with the same conversationId
+                updateAIMessage(renderMarkdown(result), conversationId);
               }
             }
           }
@@ -76,4 +120,16 @@ chatForm.addEventListener('submit', async (e) => {
       }
     }
   }
-});
+}
+
+if (window.location.href.includes("/chart.html")) {
+  initializeMarkdown()
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const chatForm = document.getElementById('chatForm');
+    const queryInput = document.getElementById('queryInput');
+    const chatHistory = document.getElementById('chatHistory');
+
+    chatForm.addEventListener('submit', handleChatSubmit);
+  });
+}

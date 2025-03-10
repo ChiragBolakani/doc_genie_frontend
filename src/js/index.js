@@ -14,6 +14,8 @@ import map01 from "./components/map-01";
 import { handleLogin } from "./signin";
 import { logout_button_event } from "./token_utils";
 import tables from "./tables"
+import chart from "./chart"
+import markdown_utils from "./markdown_utils"
 
 Alpine.plugin(persist);
 window.Alpine = Alpine;
