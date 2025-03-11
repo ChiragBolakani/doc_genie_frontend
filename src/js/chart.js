@@ -1,5 +1,6 @@
 import { get_access_token } from "./token_utils";
 import { initializeMarkdown, renderMarkdown } from "./markdown_utils.js";
+import { setCookie, getCookie, checkCookie } from "./cookie_utils.js";
 
 function generateGUID() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -9,10 +10,24 @@ function generateGUID() {
   });
 }
 
-// You might want to modify the element IDs to better reflect the relationship:
+// Function to get or create client_id
+function getOrCreateClientId() {
+  if (checkCookie('client_id')) {
+    return getCookie('client_id');
+  }
+  
+  const newClientId = generateGUID();
+  // Set cookie to expire in 30 days
+  const expirationDate = new Date();
+  expirationDate.setDate(expirationDate.getDate() + 30);
+  setCookie('client_id', newClientId, expirationDate.toUTCString());
+  
+  return newClientId;
+}
+
 function buildUserMessageElement(message, conversationId) {
   const message_element = `
-    <div id="conversation-${conversationId}-user" class="flex gap-3 my-4 text-gray-600 text-sm flex-1">
+    <div id="conversation-${conversationId}-user" class="flex gap-3 my-4 text-gray-600 text-sm">
       <span class="relative flex shrink-0 overflow-hidden rounded-full w-8 h-8">
         <div class="rounded-full bg-gray-100 border p-1">
           <svg stroke="none" fill="black" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true" height="20" width="20" xmlns="http://www.w3.org/2000/svg">
@@ -20,8 +35,10 @@ function buildUserMessageElement(message, conversationId) {
           </svg>
         </div>
       </span>
-      <p class="leading-relaxed"><span class="block font-bold text-gray-700">You </span>${message}
-      </p>
+      <div class="flex-1 max-w-3xl">
+        <div class="font-bold text-gray-700 mb-1">You</div>
+        <div class="message-content">${message}</div>
+      </div>
     </div>
   `;
   return message_element;
@@ -29,7 +46,7 @@ function buildUserMessageElement(message, conversationId) {
 
 function buildAIMessageElement(message, conversationId) {
   const message_element = `
-    <div id="conversation-${conversationId}-ai" class="flex gap-3 my-4 text-gray-600 text-sm flex-1">
+    <div id="conversation-${conversationId}-ai" class="flex gap-3 my-4 text-gray-600 text-sm">
       <span class="relative flex shrink-0 overflow-hidden rounded-full w-8 h-8">
         <div class="rounded-full bg-gray-100 border p-1">
           <svg stroke="none" fill="black" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true" height="20" width="20" xmlns="http://www.w3.org/2000/svg">
@@ -38,11 +55,22 @@ function buildAIMessageElement(message, conversationId) {
           </svg>
         </div>
       </span>
-      <p class="leading-relaxed"><span class="block font-bold text-gray-700">AI </span>${message}
-      </p>
+      <div class="flex-1 max-w-3xl">
+        <div class="font-bold text-gray-700 mb-1">DocGenie</div>
+        <div class="message-content markdown-content">${message}</div>
+      </div>
     </div>
   `;
   return message_element;
+}
+
+function updateAIMessage(message, conversationId) {
+  const messageDiv = document.getElementById(`conversation-${conversationId}-ai`);
+  if (messageDiv) {
+    const contentDiv = messageDiv.querySelector('.message-content');
+    contentDiv.innerHTML = message;
+    chatHistory.scrollTop = chatHistory.scrollHeight;
+  }
 }
 
 function appendMessage(message, conversationId, isUser = false) {
@@ -53,20 +81,11 @@ function appendMessage(message, conversationId, isUser = false) {
   chatHistory.scrollTop = chatHistory.scrollHeight;
 }
 
-function updateAIMessage(message, conversationId) {
-  const messageDiv = document.getElementById(`conversation-${conversationId}-ai`);
-  if (messageDiv) {
-    const messageParagraph = messageDiv.querySelector('p');
-    messageParagraph.innerHTML = `<span class="block font-bold text-gray-700">AI </span>${message}`;
-    chatHistory.scrollTop = chatHistory.scrollHeight;
-  }
-}
-
 async function handleChatSubmit(e) {
   e.preventDefault();
   const question = queryInput.value.trim();
   if (question !== '') {
-    const clientId = generateGUID();
+    const clientId = getOrCreateClientId();
     const conversationId = generateGUID();  // One conversationId for both question and answer
 
     // Add user's question with the conversationId
@@ -126,6 +145,9 @@ if (window.location.href.includes("/chart.html")) {
   initializeMarkdown()
 
   document.addEventListener('DOMContentLoaded', () => {
+    // Ensure client_id exists
+    getOrCreateClientId();
+
     const chatForm = document.getElementById('chatForm');
     const queryInput = document.getElementById('queryInput');
     const chatHistory = document.getElementById('chatHistory');

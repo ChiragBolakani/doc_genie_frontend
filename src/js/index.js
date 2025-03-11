@@ -13,6 +13,7 @@ import chart04 from "./components/chart-04";
 import map01 from "./components/map-01";
 import { handleLogin } from "./signin";
 import { logout_button_event } from "./token_utils";
+import { updateHeaderUserInfo } from "./profile_utils"
 import tables from "./tables"
 import chart from "./chart"
 import markdown_utils from "./markdown_utils"
@@ -63,4 +64,5 @@ document.addEventListener("DOMContentLoaded", () => {
   chart04();
   map01();
   logout_button_event()
+  updateHeaderUserInfo()
 });

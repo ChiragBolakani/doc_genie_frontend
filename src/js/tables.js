@@ -244,7 +244,7 @@ if (window.location.href.includes("/tables.html")){
     // ensure user is authenticated
     ensureAuthenticated()
 
-     // Close modal buttons
+    // Close modal buttons
     document.getElementById('close-delete-modal').addEventListener('click', () => {
       const deleteModal = document.getElementById('delete-modal');
       const deleteModalOverlay = document.getElementById('delete-modal-overlay');
