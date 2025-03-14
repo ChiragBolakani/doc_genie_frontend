@@ -107,7 +107,10 @@ export async function refreshTokenIfNeeded() {
 }
 
 export function logout_button_event(){
-    document.getElementById('logout-button').addEventListener('click', ()=>{
-        logout()
-    })
+    const logout_button = document.getElementById('logout-button')
+    if (logout_button != null){
+        logout_button.addEventListener('click', ()=>{
+            logout()
+        })
+    }
 }

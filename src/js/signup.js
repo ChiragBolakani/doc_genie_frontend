@@ -1,8 +1,8 @@
-import { setCookie } from "./cookie_utils";
-import { getJWTExpiration } from "./token_utils";
+import { setCookie } from "./cookie_utils.js";
+import { getJWTExpiration } from "./token_utils.js";
 
 // function to handle signup
-async function handleSignup(event) {
+export async function handleSignup(event) {
     event.preventDefault();
 
     // Get form values
@@ -42,12 +42,12 @@ async function handleSignup(event) {
         const refreshExpiry = getJWTExpiration(data.refresh);
 
         // Set cookies with expiration from JWT
-        setCookie('access_token', data.access, accessExpiry);
-        setCookie('refresh_token', data.refresh, refreshExpiry);
-        setCookie('user_profile', JSON.stringify(data.user), refreshExpiry);
+        // setCookie('access_token', data.access, accessExpiry);
+        // setCookie('refresh_token', data.refresh, refreshExpiry);
+        // setCookie('user_profile', JSON.stringify(data.user), refreshExpiry);
 
         // Redirect to dashboard or home page
-        window.location.href = '/'; // Adjust the redirect URL as needed
+        window.location.href = '/signin.html'; // Adjust the redirect URL as needed
 
     } catch (error) {
         console.error('Error during signup:', error);
@@ -55,18 +55,21 @@ async function handleSignup(event) {
     }
 }
 
+if (window.location.href.includes("/signup.html")){
+    document.addEventListener('DOMContentLoaded', ()=>{
+        // Add form submit event listener
+        document.getElementById('signupForm').addEventListener('submit', handleSignup);
 
-// Add form submit event listener
-document.getElementById('signupForm').addEventListener('submit', handleSignup);
+        // Optional: Add password match validation in real-time
+        document.getElementById('password2').addEventListener('input', function () {
+            const password1 = document.getElementById('password1').value;
+            const password2 = this.value;
 
-// Optional: Add password match validation in real-time
-document.getElementById('password2').addEventListener('input', function () {
-    const password1 = document.getElementById('password1').value;
-    const password2 = this.value;
-
-    if (password1 !== password2) {
-        this.setCustomValidity("Passwords don't match");
-    } else {
-        this.setCustomValidity('');
-    }
-});
+            if (password1 !== password2) {
+                this.setCustomValidity("Passwords don't match");
+            } else {
+                this.setCustomValidity('');
+            }
+        });
+    })
+}
