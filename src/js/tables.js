@@ -18,7 +18,7 @@ const uploadDocument = async (e) => {
   formData.append('file', file);
 
   try {
-    const response = await fetch('http://localhost:8000/api/v1/documents/', {
+    const response = await fetch('https://doc-genie-backend-316971717795.asia-south1.run.app/api/v1/documents/', {
       method: 'POST',
       body: formData,
       headers : {
@@ -167,7 +167,7 @@ const fetchDocuments = async () => {
     const access_token = await get_access_token();
 
     // Fetch documents
-    const response = await fetch('http://localhost:8000/api/v1/documents/', {
+    const response = await fetch('https://doc-genie-backend-316971717795.asia-south1.run.app/api/v1/documents/', {
       method: 'GET',
       headers: {
         "Authorization": `Bearer ${access_token}`,
@@ -209,7 +209,7 @@ const deleteDocument = async (documentId) => {
     ensureAuthenticated();
     const access_token = await get_access_token();
 
-    const response = await fetch(`http://localhost:8000/api/v1/documents/${documentId}/`, {
+    const response = await fetch(`https://doc-genie-backend-316971717795.asia-south1.run.app/api/v1/documents/${documentId}/`, {
       method: 'DELETE',
       headers: {
         "Authorization": `Bearer ${access_token}`,

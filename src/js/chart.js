@@ -94,7 +94,7 @@ async function handleChatSubmit(e) {
 
     const access_token = await get_access_token();
 
-    const response = await fetch('http://127.0.0.1:8000/api/v1/query/', {
+    const response = await fetch('https://doc-genie-backend-316971717795.asia-south1.run.app/api/v1/query/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
