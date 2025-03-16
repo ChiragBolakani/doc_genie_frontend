@@ -1,37 +1,74 @@
 #!/bin/bash
 
 # Variables
-LOCAL_BUILD_PATH="C:/Users/chirag/Documents/python/DocGenie/doc_genie_frontend/build"
-REMOTE_USER="cssjava1"
 INSTANCE_NAME="instance-20250310-191214"
-REMOTE_HOST="$REMOTE_USER@$INSTANCE_NAME"
-REMOTE_BUILD_PATH="/home/apps/doc_genie/ui/build"
+ZONE="asia-south1-c"  # Added zone
+USER="cssjava1"
+REMOTE_PATH="/home/apps/doc_genie/ui"
+CONTAINER_NAME="doc_genie_ui"
+LOCAL_BUILD_PATH="C:/Users/chirag/Documents/python/DocGenie/doc_genie_frontend/build"
 
-# Ensure the local build path exists
-if [ ! -d "$LOCAL_BUILD_PATH" ]; then
-    echo "Error: Local build path does not exist."
-    exit 1
-fi
+# Colors for output
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
 
-echo "Copying build files to remote server..."
-gcloud compute scp --recurse "$LOCAL_BUILD_PATH" "$REMOTE_HOST:$REMOTE_BUILD_PATH"
+# Function to print status
+print_status() {
+    echo -e "${GREEN}[INFO]${NC} \$1"
+}
 
-# Run docker commands on the remote instance
-echo "Checking for existing container and deploying the new one..."
-gcloud compute ssh "$REMOTE_HOST" --command "
-    # Check if container is running
-    if docker ps -q --filter 'name=doc_genie_ui' | grep -q .; then
-        echo 'Stopping and removing existing doc_genie_ui container...'
-        docker stop doc_genie_ui && docker rm doc_genie_ui
+print_error() {
+    echo -e "${RED}[ERROR]${NC} \$1"
+}
+
+# Function to check if last command was successful
+check_status() {
+    if [ $? -eq 0 ]; then
+        print_status "\$1 successful"
+    else
+        print_error "\$1 failed"
+        exit 1
+    fi
+}
+
+# 1. Copy build to Remote VM
+print_status "Copying build folder to remote VM..."
+gcloud compute scp --recurse "${LOCAL_BUILD_PATH}" ${USER}@${INSTANCE_NAME}:${REMOTE_PATH} --zone=${ZONE}
+check_status "Copy"
+
+# 2. Connect to VM and execute Docker commands
+print_status "Connecting to VM and executing Docker commands..."
+gcloud compute ssh ${USER}@${INSTANCE_NAME} --zone=${ZONE} --command "
+    # Switch to root user
+    sudo su <<'EOF'
+
+    # Stop container if running
+    if docker ps -a | grep -q ${CONTAINER_NAME}; then
+        echo 'Stopping container...'
+        docker stop ${CONTAINER_NAME}
+        docker rm ${CONTAINER_NAME}
     fi
 
-    echo 'Starting new doc_genie_ui container...'
+    # Start new container
+    echo 'Starting new container...'
     docker run -d \
-        --name doc_genie_ui \
+        --name ${CONTAINER_NAME} \
         -p 3000:80 \
-        -v /home/apps/doc_genie/ui/build:/usr/share/nginx/html \
-        -v /home/apps/doc_genie/ui/nginx.conf:/etc/nginx/conf.d/default.conf \
+        -v ${REMOTE_PATH}/build:/usr/share/nginx/html \
+        -v ${REMOTE_PATH}/nginx.conf:/etc/nginx/conf.d/default.conf \
         nginx:alpine
-"
 
-echo "Deployment complete!"
+    # Check if container is running
+    if docker ps | grep -q ${CONTAINER_NAME}; then
+        echo 'Container started successfully'
+    else
+        echo 'Container failed to start'
+        exit 1
+    fi
+EOF
+"
+check_status "Docker operations"
+
+print_status "Deployment completed successfully!"
+print_status "UI should be accessible at http://<vm-ip>:3000"
