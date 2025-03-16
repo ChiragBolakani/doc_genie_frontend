@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Doc Genie</title>
+</head>
+<style>
+  @keyframes float {
+    0% {
+      transform: translateY(0px);
+    }
+
+    50% {
+      transform: translateY(-20px);
+    }
+
+    100% {
+      transform: translateY(0px);
+    }
+  }
+
+  @keyframes scan {
+    0% {
+      transform: translateY(-100%);
+    }
+
+    100% {
+      transform: translateY(100%);
+    }
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-scan {
+    animation: scan 3s linear infinite;
+  }
+</style>
+
+<body
+  x-data="{ page: 'ecommerce', 'loaded': true, 'darkMode': true, 'stickyMenu': false, 'sidebarToggle': false, 'scrollTop': false }"
+  x-init="
+         darkMode = JSON.parse(localStorage.getItem('darkMode'));
+         $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))"
+  :class="{'dark text-bodydark bg-boxdark-2': darkMode === true}">
+  <!-- ===== Preloader Start ===== -->
+  <include src="./partials/preloader.html"></include>
+  <!-- ===== Preloader End ===== -->
+
+  <!-- ===== Page Wrapper Start ===== -->
+  <div class="flex h-screen overflow-hidden">
+    <!-- ===== Sidebar Start ===== -->
+    <include src="./partials/sidebar.html"></include>
+    <!-- ===== Sidebar End ===== -->
+
+    <!-- ===== Content Area Start ===== -->
+    <div class="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
+      <!-- ===== Header Start ===== -->
+      <include src="./partials/header.html" />
+      <!-- ===== Header End ===== -->
+
+      <!-- ===== Main Content Start ===== -->
+      <main class="py-16">
+        <!-- Header -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              Getting Started with Doc Genie
+          </h1>
+          <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+              Two simple steps to get instant answers from your document
+          </p>
+      </div>
+
+      <!-- Step 1: Upload Document -->
+      <div class="max-w-7xl mx-auto mt-16 px-4 sm:px-6 lg:px-8">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+              <div>
+                  <div class="bg-indigo-100 dark:bg-indigo-900 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                      <span class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">1</span>
+                  </div>
+                  <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                      Upload Your Document
+                  </h2>
+                  <div class="space-y-4">
+                      <p class="text-gray-600 dark:text-gray-300">
+                          On the <span class="font-semibold text-indigo-600 dark:text-indigo-400">Documents</span> page:
+                      </p>
+                      <ul class="space-y-2 text-gray-600 dark:text-gray-300">
+                          <li class="flex items-center">
+                              <svg class="h-5 w-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                              </svg>
+                              Click "Upload Document" or drag & drop your file
+                          </li>
+                          <li class="flex items-center">
+                              <svg class="h-5 w-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                              </svg>
+                              Supported formats: PDF, DOCX, TXT (up to 10MB)
+                          </li>
+                          <li class="flex items-center">
+                              <svg class="h-5 w-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                              </svg>
+                              Your document will be processed automatically
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+              <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+                  <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center">
+                      <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                      </svg>
+                      <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">
+                          Drag and drop your file here, or click to browse
+                      </p>
+                  </div>
+                  <div class="mt-4 bg-indigo-50 dark:bg-indigo-900/50 rounded-lg p-4">
+                      <p class="text-sm text-indigo-700 dark:text-indigo-300">
+                          💡 Pro Tip: Make sure your document is clear and properly formatted for best results.
+                      </p>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <!-- Step 2: Ask Questions -->
+      <div class="max-w-7xl mx-auto mt-20 px-4 sm:px-6 lg:px-8">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+              <div class="order-2 md:order-1 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+                  <!-- <div class="border-b border-gray-200 dark:border-gray-700 pb-4">
+                      <p class="text-gray-600 dark:text-gray-300 mb-2">Selected Document: Project_Report.pdf</p>
+                  </div> -->
+                  <div class="py-4 space-y-4">
+                      <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                          <p class="text-gray-800 dark:text-gray-200">What are the main conclusions?</p>
+                      </div>
+                      <div class="bg-indigo-50 dark:bg-indigo-900/50 rounded-lg p-4">
+                          <p class="text-gray-800 dark:text-gray-200">The main conclusions are...</p>
+                      </div>
+                  </div>
+                  <div class="border-t border-gray-200 dark:border-gray-700 pt-4">
+                      <div class="flex items-center">
+                          <input type="text" placeholder="Ask a question..." class="flex-1 rounded-l-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700">
+                          <button class="bg-indigo-600 text-white px-4 py-2 rounded-r-lg">Ask</button>
+                      </div>
+                  </div>
+              </div>
+              <div class="order-1 md:order-2">
+                  <div class="bg-indigo-100 dark:bg-indigo-900 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                      <span class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">2</span>
+                  </div>
+                  <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                      Ask Questions
+                  </h2>
+                  <div class="space-y-4">
+                      <p class="text-gray-600 dark:text-gray-300">
+                          On the <span class="font-semibold text-indigo-600 dark:text-indigo-400">Q&A</span> page:
+                      </p>
+                      <ul class="space-y-2 text-gray-600 dark:text-gray-300">
+                          <li class="flex items-center">
+                              <svg class="h-5 w-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                              </svg>
+                              Type your question about the document
+                          </li>
+                          <li class="flex items-center">
+                              <svg class="h-5 w-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                              </svg>
+                              Get instant, accurate answers
+                          </li>
+                          <li class="flex items-center">
+                              <svg class="h-5 w-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                              </svg>
+                              Ask follow-up questions for clarity
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <!-- Example Questions -->
+      <div class="max-w-7xl mx-auto mt-20 px-4 sm:px-6 lg:px-8">
+          <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
+              <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-6">
+                  Example Questions You Can Ask
+              </h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                      <p class="text-indigo-600 dark:text-indigo-400 font-medium">
+                          "What are the key findings in the document?"
+                      </p>
+                  </div>
+                  <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                      <p class="text-indigo-600 dark:text-indigo-400 font-medium">
+                          "Summarize the main points in bullet points."
+                      </p>
+                  </div>
+                  <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                      <p class="text-indigo-600 dark:text-indigo-400 font-medium">
+                          "What are the conclusions drawn?"
+                      </p>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <!-- Get Started CTA -->
+      <div class="max-w-7xl mx-auto mt-20 px-4 sm:px-6 lg:px-8 text-center">
+          <a href="/documents.html" class="inline-flex items-center px-8 py-4 rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 transition-colors duration-300">
+              Upload Your First Document
+              <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+              </svg>
+          </a>
+      </div>
+      </main>
+      <!-- ===== Main Content End ===== -->
+    </div>
+    <!-- ===== Content Area End ===== -->
+  </div>
+  <!-- ===== Page Wrapper End ===== -->
+</body>
+
+</html>

@@ -37,7 +37,7 @@ export async function handleLogin(event) {
         setCookie('user_profile', JSON.stringify(data.user), refreshExpiry);
 
         // Redirect to dashboard or home page
-        window.location.href = '/'; // Adjust the redirect URL as needed
+        window.location.href = '/home.html'; // Adjust the redirect URL as needed
 
     } catch (error) {
         console.error('Error during login:', error);

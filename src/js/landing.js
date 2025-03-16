@@ -1,4 +1,4 @@
-if (window.location.href.includes("/landing.html")){
+if (window.location.pathname === "/"){
     const mobileMenuButton = document.getElementById('mobile-menu-button');
     const mobileMenu = document.getElementById('mobile-menu');
 
