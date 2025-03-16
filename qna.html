@@ -4,11 +4,11 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Charts | TailAdmin - Tailwind CSS Admin Dashboard Template</title>
+    <title>QnA | Doc Genie</title>
   <link rel="icon" href="favicon.ico"><link href="style.css" rel="stylesheet"></head>
 
   <body
-    x-data="{ page: 'Chart', 'loaded': true, 'darkMode': true, 'stickyMenu': false, 'sidebarToggle': false, 'scrollTop': false }"
+    x-data="{ page: 'Doc Genie', 'loaded': true, 'darkMode': true, 'stickyMenu': false, 'sidebarToggle': false, 'scrollTop': false }"
     x-init="
           darkMode = JSON.parse(localStorage.getItem('darkMode'));
           $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))"
@@ -213,7 +213,7 @@
           <li>
             <a
               class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
-              href="tables.html"
+              href="doc_genie_frontend/documents.html"
               @click="selected = (selected === 'Tables' ? '':'Tables')"
               :class="{ 'bg-graydark dark:bg-meta-4': (selected === 'Tables') && (page === 'tables') }"
             >
@@ -251,7 +251,7 @@
           <li>
             <a
               class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
-              href="../developed_by.html"
+              href="../doc_genie_frontend/developed_by.html"
               @click="selected = (selected === 'DevelopedBy' ? '':'DevelopedBy')"
               :class="{ 'bg-graydark dark:bg-meta-4': (selected === 'DevelopedBy') && (page === 'DevelopedBy') }"
             >
@@ -274,7 +274,7 @@
           <li>
             <a
               class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
-              href="chart.html"
+              href="doc_genie_frontend/qna.html"
               @click="selected = (selected === 'Chart' ? '':'Chart')"
               :class="{ 'bg-graydark dark:bg-meta-4': (selected === 'Chart') && (page === 'Chart') }"
             >
@@ -563,30 +563,6 @@
         <!-- ===== Header End ===== -->
 
         <!-- ===== Main Content Start ===== -->
-        <!-- <main class="h-full overflow-y-auto">
-          <div style="box-shadow: 0 0 #0000, 0 0 #0000, 0 1px 2px 0 rgb(0 0 0 / 0.05);" 
-          class="w-full h-full bg-white p-6 rounded-lg border border-[#e5e7eb] flex flex-col">
-           
-        
-            <div id="chatHistory" class="flex-1 overflow-y-auto mb-4" style="height: calc(100% - 70px);">
-
-             
-
-            </div>
-            
-            <div class="pt-4 mt-auto">
-              <form class="flex items-center justify-center w-full space-x-2" id="chatForm">
-                <input id="queryInput" class="flex h-10 w-full rounded-md border border-[#e5e7eb] px-3 py-2 text-sm placeholder-[#6b7280] focus:outline-none focus:ring-2 focus:ring-[#9ca3af] disabled:cursor-not-allowed disabled:opacity-50 text-[#030712] focus-visible:ring-offset-2" placeholder="Type your message" value="">
-                <button class="inline-flex items-center justify-center rounded-md text-sm font-medium text-[#f9fafb] disabled:pointer-events-none disabled:opacity-50 bg-black hover:bg-[#111827E6] h-10 px-4 py-2">
-                  Send</button>
-              </form>
-            </div>
-
-          </div>
-
-          </div>
-        </main> -->
-
         <main class="h-full overflow-y-auto">
           <div class="w-full h-full bg-white p-6 rounded-lg border border-[#e5e7eb] flex flex-col" 
                style="box-shadow: 0 0 #0000, 0 0 #0000, 0 1px 2px 0 rgb(0 0 0 / 0.05);">
@@ -616,22 +592,5 @@
       <!-- ===== Content Area End ===== -->
     </div>
     <!-- ===== Page Wrapper End ===== -->
-     <!-- <script src="js/chart.js"></script> -->
-     <script>
-  //      function adjustHeight() {
-  //   const header = document.querySelector('header'); // or your header selector
-  //   const chatMain = document.getElementById('chatMain');
-  //   if (header && chatMain) {
-  //     const headerHeight = header.offsetHeight;
-  //     chatMain.style.height = `calc(100vh - ${headerHeight}px)`;
-  //   }
-  // }
-
-  // // Run on page load
-  // adjustHeight();
-
-  // // Run on window resize
-  // window.addEventListener('resize', adjustHeight);
-  //    </script>
   <script defer src="bundle.js"></script></body>
 </html>

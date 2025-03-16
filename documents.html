@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tables | TailAdmin - Tailwind CSS Admin Dashboard Template</title>
+  <title>Documents | Doc Genie</title>
 <link rel="icon" href="favicon.ico"><link href="style.css" rel="stylesheet"></head>
 
 <body
@@ -213,7 +213,7 @@
           <li>
             <a
               class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
-              href="tables.html"
+              href="doc_genie_frontend/documents.html"
               @click="selected = (selected === 'Tables' ? '':'Tables')"
               :class="{ 'bg-graydark dark:bg-meta-4': (selected === 'Tables') && (page === 'tables') }"
             >
@@ -251,7 +251,7 @@
           <li>
             <a
               class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
-              href="../developed_by.html"
+              href="../doc_genie_frontend/developed_by.html"
               @click="selected = (selected === 'DevelopedBy' ? '':'DevelopedBy')"
               :class="{ 'bg-graydark dark:bg-meta-4': (selected === 'DevelopedBy') && (page === 'DevelopedBy') }"
             >
@@ -274,7 +274,7 @@
           <li>
             <a
               class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
-              href="chart.html"
+              href="doc_genie_frontend/qna.html"
               @click="selected = (selected === 'Chart' ? '':'Chart')"
               :class="{ 'bg-graydark dark:bg-meta-4': (selected === 'Chart') && (page === 'Chart') }"
             >
@@ -988,7 +988,7 @@
         <!-- Documents will be dynamically inserted here -->
       </tbody>
     </table>
-    <div
+    <!-- <div
       class="flex items-center dark:border-strokedark dark:bg-boxdark justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
       <div class="flex flex-1 justify-between sm:hidden">
         <a href="#"
@@ -996,7 +996,7 @@
         <a href="#"
           class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Next</a>
       </div>
-    </div>
+    </div> -->
   </div>
 </div>
             <!-- ====== Table Three End -->
@@ -1010,6 +1010,9 @@
   </div>
   <!-- ===== Page Wrapper End ===== -->
   <!-- <script type="module" src="./js/tables.js"></script> -->
+  <div id="loading-overlay" class="loading-overlay">
+    <div class="spinner"></div>
+  </div>
 <script defer src="bundle.js"></script></body>
 
 </html>

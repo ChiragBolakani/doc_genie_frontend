@@ -5,9 +5,7 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>
-    eCommerce Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template
-  </title>
+  <title>Doc Genie</title>
 <link rel="icon" href="favicon.ico"><link href="style.css" rel="stylesheet"></head>
 <style>
   @keyframes float {
@@ -248,7 +246,7 @@
           <li>
             <a
               class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
-              href="tables.html"
+              href="doc_genie_frontend/documents.html"
               @click="selected = (selected === 'Tables' ? '':'Tables')"
               :class="{ 'bg-graydark dark:bg-meta-4': (selected === 'Tables') && (page === 'tables') }"
             >
@@ -286,7 +284,7 @@
           <li>
             <a
               class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
-              href="../developed_by.html"
+              href="../doc_genie_frontend/developed_by.html"
               @click="selected = (selected === 'DevelopedBy' ? '':'DevelopedBy')"
               :class="{ 'bg-graydark dark:bg-meta-4': (selected === 'DevelopedBy') && (page === 'DevelopedBy') }"
             >
@@ -309,7 +307,7 @@
           <li>
             <a
               class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
-              href="chart.html"
+              href="doc_genie_frontend/qna.html"
               @click="selected = (selected === 'Chart' ? '':'Chart')"
               :class="{ 'bg-graydark dark:bg-meta-4': (selected === 'Chart') && (page === 'Chart') }"
             >
@@ -747,7 +745,7 @@
 
       <!-- Get Started CTA -->
       <div class="max-w-7xl mx-auto mt-20 px-4 sm:px-6 lg:px-8 text-center">
-          <a href="/tables.html" class="inline-flex items-center px-8 py-4 rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 transition-colors duration-300">
+          <a href="/documents.html" class="inline-flex items-center px-8 py-4 rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 transition-colors duration-300">
               Upload Your First Document
               <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
