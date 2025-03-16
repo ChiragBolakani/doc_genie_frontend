@@ -3,6 +3,10 @@ import { ensureAuthenticated, get_access_token, isAuthenticated } from "./token_
 const uploadDocument = async (e) => {
   e.preventDefault();
 
+  // Show loading overlay
+  const loadingOverlay = document.getElementById('loading-overlay');
+  loadingOverlay.style.display = 'flex';
+
   ensureAuthenticated()
   const access_token = await get_access_token()
 
@@ -18,14 +22,12 @@ const uploadDocument = async (e) => {
   formData.append('file', file);
 
   try {
-    const response = await fetch('https://doc-genie-backend-316971717795.asia-south1.run.app/api/v1/documents/', {
+    const response = await fetch('http://localhost:8000/api/v1/documents/', {
       method: 'POST',
       body: formData,
       headers : {
         "Authorization" : `Bearer ${access_token}`
       }
-      // If you need to include credentials (cookies, authorization headers)
-      // credentials: 'include',
     });
 
     if (!response.ok) {
@@ -34,7 +36,11 @@ const uploadDocument = async (e) => {
 
     const data = await response.json();
     console.log('Success:', data);
-    // Handle success (e.g., show success message, reset form)
+    
+    // Hide loading overlay
+    loadingOverlay.style.display = 'none';
+    
+    // Handle success
     alert('Document uploaded successfully!');
     e.target.reset();
 
@@ -43,7 +49,11 @@ const uploadDocument = async (e) => {
     
   } catch (error) {
     console.error('Error:', error);
-    // Handle error (e.g., show error message)
+    
+    // Hide loading overlay
+    loadingOverlay.style.display = 'none';
+    
+    // Handle error
     alert('Error uploading document. Please try again.');
   }
 }
@@ -167,7 +177,7 @@ const fetchDocuments = async () => {
     const access_token = await get_access_token();
 
     // Fetch documents
-    const response = await fetch('https://doc-genie-backend-316971717795.asia-south1.run.app/api/v1/documents/', {
+    const response = await fetch('http://localhost:8000/api/v1/documents/', {
       method: 'GET',
       headers: {
         "Authorization": `Bearer ${access_token}`,
@@ -209,7 +219,7 @@ const deleteDocument = async (documentId) => {
     ensureAuthenticated();
     const access_token = await get_access_token();
 
-    const response = await fetch(`https://doc-genie-backend-316971717795.asia-south1.run.app/api/v1/documents/${documentId}/`, {
+    const response = await fetch(`http://localhost:8000/api/v1/documents/${documentId}/`, {
       method: 'DELETE',
       headers: {
         "Authorization": `Bearer ${access_token}`,
