@@ -11,11 +11,7 @@ function generateGUID() {
 }
 
 // Function to get or create client_id
-function getOrCreateClientId() {
-  if (checkCookie('client_id')) {
-    return getCookie('client_id');
-  }
-  
+function createClientId() {
   const newClientId = generateGUID();
   // Set cookie to expire in 30 days
   const expirationDate = new Date();
@@ -85,7 +81,13 @@ async function handleChatSubmit(e) {
   e.preventDefault();
   const question = queryInput.value.trim();
   if (question !== '') {
-    const clientId = getOrCreateClientId();
+    let clientId;
+    if (checkCookie('client_id')) {
+      clientId = getCookie('client_id');
+    }
+    else{
+      clientId = createClientId()
+    }
     const conversationId = generateGUID();  // One conversationId for both question and answer
 
     // Add user's question with the conversationId
@@ -146,7 +148,7 @@ if (window.location.href.includes("/chart.html")) {
 
   document.addEventListener('DOMContentLoaded', () => {
     // Ensure client_id exists
-    getOrCreateClientId();
+    createClientId();
 
     const chatForm = document.getElementById('chatForm');
     const queryInput = document.getElementById('queryInput');
