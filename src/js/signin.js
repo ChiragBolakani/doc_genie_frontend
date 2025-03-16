@@ -9,7 +9,7 @@ export async function handleLogin(event) {
     const password = document.getElementById('password').value;
 
     try {
-        const response = await fetch('https://doc-genie-backend-316971717795.asia-south1.run.app/api/v1/auth/login/', {
+        const response = await fetch('http://localhost:8000/api/v1/auth/login/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
