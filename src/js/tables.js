@@ -248,7 +248,7 @@ const deleteDocument = async (documentId) => {
   }
 };
 
-if (window.location.href.includes("/tables.html")){
+if (window.location.href.includes("/documents.html")){
   document.addEventListener('DOMContentLoaded', ()=>{
 
     // ensure user is authenticated

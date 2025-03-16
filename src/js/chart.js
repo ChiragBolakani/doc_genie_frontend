@@ -143,7 +143,7 @@ async function handleChatSubmit(e) {
   }
 }
 
-if (window.location.href.includes("/chart.html")) {
+if (window.location.href.includes("/qna.html")) {
   initializeMarkdown()
 
   document.addEventListener('DOMContentLoaded', () => {
