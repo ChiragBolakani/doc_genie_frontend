@@ -51,7 +51,7 @@ export async function handleSignup(event) {
     }
 
     try {
-        const response = await fetch('https://doc-genie-backend-316971717795.asia-south1.run.app/api/v1/auth/registration/', {
+        const response = await fetch('https://doc-genie-918260967600.asia-south1.run.app/api/v1/auth/registration/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

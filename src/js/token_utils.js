@@ -34,7 +34,7 @@ export async function get_access_token() {
         }
 
         // Use refresh token to get new access token
-        const response = await fetch('https://doc-genie-backend-316971717795.asia-south1.run.app/api/v1/auth/token/refresh/', {
+        const response = await fetch('https://doc-genie-918260967600.asia-south1.run.app/api/v1/auth/token/refresh/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
